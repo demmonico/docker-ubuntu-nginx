@@ -1,12 +1,10 @@
-# DEPRECATED
-#
 # Dockerfile for build app container
 #
 # tech-stack: ubuntu / nginx
 #
 # @author demmonico
 # @image ubuntu-nginx
-# @version v1.1
+# @version v2.0
 
 
 FROM ubuntu:14.04
@@ -22,6 +20,10 @@ ENV LC_ALL=en_US.UTF-8
 
 # for mc
 ENV TERM xterm
+
+# additional files required to run container (from version v2.0)
+ENV INSTALL_DIR="/docker-install"
+
 
 
 ### INSTALL SOFTWARE
@@ -52,10 +54,17 @@ EXPOSE 80
 # copy supervisord config file
 COPY supervisord.conf /etc/supervisor/supervisord.conf
 
+# copy nginx config's template file
+COPY proxy.template /etc/nginx/conf.d/proxy.template
+
 # init run once flag
 COPY run_once.sh /run_once.sh
 ENV RUN_ONCE_FLAG "/run_once"
 RUN tee ${RUN_ONCE_FLAG} && chmod +x /run_once.sh
+
+# run custom run command if defined
+ARG CUSTOM_BUILD_COMMAND
+RUN ${CUSTOM_BUILD_COMMAND:-":"}
 
 # init run script
 COPY run.sh /run.sh
