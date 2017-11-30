@@ -3,6 +3,9 @@
 ## Description
 
 Docker NGINX-based image. Use as image for proxy container.
+Was developed for using with [Docker Manager](https://github.com/demmonico/docker-manager/). 
+But could be used separately.
+You could pull image from here and build locally either pull from [Docker Hub](https://hub.docker.com/r/demmonico/ubuntu-nginx/) directly.
 
 
 ### Installs
@@ -33,20 +36,10 @@ Docker NGINX-based image. Use as image for proxy container.
 docker build -t demmonico/ubuntu-nginx --no-cache .
 ```
 
-### Make tag
-
-```sh
-docker tag IMAGE_ID demmonico/ubuntu-nginx:1.4.6
-```
-
 ### Push image to Docker Hub
 
 ```sh
 docker push demmonico/ubuntu-nginx
-```
-or with tag
-```sh
-docker push demmonico/ubuntu-nginx:1.4.6
 ```
 
 
@@ -57,11 +50,9 @@ docker push demmonico/ubuntu-nginx:1.4.6
 ```sh
 FROM demmonico/ubuntu-nginx
 
-VIRTUAL_HOST=example.com
-
 # optional
 ENV APP_UPSTREAM=server app:80;
-
+  
 CMD ["/run.sh"]
 ```
 
@@ -70,14 +61,20 @@ CMD ["/run.sh"]
 ```sh
 ...
 image: demmonico/ubuntu-nginx
-
-# optional to provide custom upstream config
+# or
+build: local_path_to_dockerfile
+  
 environment:
+  # optional to provide custom upstream config
   - APP_UPSTREAM=ip_hash; server app1:80 weight=1 max_fails=3; server app2:80;
-
-# optional to provide custom proxy config
+  
 volumes:
+  # optional to provide custom proxy config
   - ./proxy/nginx-conf/proxy.conf:/etc/nginx/conf.d/proxy.custom
+  
+env_file:
+  # provides values for ENV variables VIRTUAL_HOST, PROJECT, HOST_USER_NAME, HOST_USER_ID
+  - host.env
 ```
 
 
