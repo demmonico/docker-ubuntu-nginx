@@ -22,7 +22,7 @@ ENV LC_ALL=en_US.UTF-8
 ENV TERM xterm
 
 # additional files required to run container (from version v2.0)
-ENV INSTALL_DIR="/docker-install"
+ENV DMC_INSTALL_DIR="/dm-install"
 
 
 
@@ -59,12 +59,12 @@ COPY proxy.template /etc/nginx/conf.d/proxy.template
 
 # init run once flag
 COPY run_once.sh /run_once.sh
-ENV RUN_ONCE_FLAG "/run_once"
-RUN tee ${RUN_ONCE_FLAG} && chmod +x /run_once.sh
+ENV DMC_RUN_ONCE_FLAG "/run_once"
+RUN tee ${DMC_RUN_ONCE_FLAG} && chmod +x /run_once.sh
 
 # run custom run command if defined
-ARG CUSTOM_BUILD_COMMAND
-RUN ${CUSTOM_BUILD_COMMAND:-":"}
+ARG DMB_CUSTOM_BUILD_COMMAND
+RUN ${DMB_CUSTOM_BUILD_COMMAND:-":"}
 
 # init run script
 COPY run.sh /run.sh
