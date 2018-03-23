@@ -55,7 +55,7 @@ server {
 
 upstream {{ $VIRTUAL_HOST }} {
     #server app:80;
-    {{ $APP_UPSTREAM }}
+    {{ $DMC_NGINX_APPUPSTREAM }}
 }
 
 

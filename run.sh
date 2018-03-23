@@ -6,7 +6,7 @@
 #
 # @author demmonico
 # @image ubuntu-nginx
-# @version v2.0
+# @version v3.2
 
 
 
@@ -36,7 +36,7 @@ elif [ -f ${PROXY_TEMPLATE} ]; then
     yes | cp -rf ${PROXY_TEMPLATE} ${PROXY_CONF}
 
     # prepare upstream var
-    APP_UPSTREAM=${APP_UPSTREAM:-"server app:80;"}
+    DMC_NGINX_APPUPSTREAM=${DMC_NGINX_APPUPSTREAM:-"server app:80;"}
 
     # replace env vars
     for i in _ {a..z} {A..Z}; do
@@ -55,6 +55,9 @@ fi
 CUSTOM_SCRIPT="${DMC_INSTALL_DIR}/custom.sh"
 if [ -f ${CUSTOM_SCRIPT} ]; then
     chmod +x ${CUSTOM_SCRIPT} && source ${CUSTOM_SCRIPT}
+fi
+if [ ! -z "${DMC_CUSTOM_RUN_COMMAND}" ]; then
+    eval ${DMC_CUSTOM_RUN_COMMAND}
 fi
 
 
