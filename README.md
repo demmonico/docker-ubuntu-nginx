@@ -24,8 +24,14 @@ You could pull image from here and build locally either pull from [Docker Hub](h
 
 ### Environment variables
 
+- DM_PROJECT_ENV
 - DMC_INSTALL_DIR
-- DMC_EXEC_NAME
+- DMC_ROOT_PASSWD (on `run_once`)
+- DMC_DM_USER  (on `run_once`)
+- DMC_DM_PASSWD  (on `run_once`)
+- DMC_CUSTOM_RUN_COMMAND
+- DMC_CUSTOM_RUNONCE_COMMAND
+- DMC_EXEC_NAME (pass container's name while `exec` cmd)
 - DMC_NGINX_APPUPSTREAM (customize nginx upstream settings, allow multi-servers structure, load balance configure etc.)
 
 
@@ -73,7 +79,7 @@ nginx:
       
   environment:
     # optional to provide custom upstream config
-    - APP_UPSTREAM=ip_hash; server app1:80 weight=1 max_fails=3; server app2:80;
+    - DMC_NGINX_APPUPSTREAM=ip_hash; server app1:80 weight=1 max_fails=3; server app2:80;
     
   volumes:
     # optional to provide custom proxy config
